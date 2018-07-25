@@ -4,6 +4,7 @@ import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
+import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
@@ -83,6 +84,16 @@ public interface OpenAPI3RouterFactory extends RouterFactory<OpenAPI> {
   @Fluent
   OpenAPI3RouterFactory mountOperationToEventBus(String operationId, String address);
 
+  @Fluent
+  OpenAPI3RouterFactory mountServiceFromTag(String tag, String address);
+
+  @Fluent
+  OpenAPI3RouterFactory mountServicesFromExtensions();
+
+  @Fluent
+  @GenIgnore
+  OpenAPI3RouterFactory mountServiceInterface(Class interfaceClass, String address);
+
   /**
    * Create a new OpenAPI3RouterFactory
    *
@@ -129,8 +140,4 @@ public interface OpenAPI3RouterFactory extends RouterFactory<OpenAPI> {
   static void createRouterFactoryFromURL(Vertx vertx, String url, Handler<AsyncResult<OpenAPI3RouterFactory>> handler) {
     OpenAPI3RouterFactory.create(vertx, url, handler);
   }
-
-  OpenAPI3RouterFactory mountTaggedOperationsToEventBus(String tag, String address);
-
-  OpenAPI3RouterFactory mountOperationsToEventBusFromExtensions();
 }
